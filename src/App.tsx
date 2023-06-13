@@ -6,6 +6,7 @@ import LoginPage from "./components/Login";
 import Header from "./components/Header";
 import Register from "./components/Register";
 import BookDetail from "./pages/BookDetail";
+import UserAccount from "./components/UserAccount";
 
 const App = () => {
     return (
@@ -31,6 +32,10 @@ const App = () => {
                             path={":id"}
                             element={<BookDetail/>}/>
                     </Route>
+                    <Route
+                        path={"/account"}
+                        element={<UserAccount />}
+                    />
                 </Routes>
             </BrowserRouter>
         </>
