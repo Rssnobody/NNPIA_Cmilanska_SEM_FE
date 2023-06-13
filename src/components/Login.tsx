@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {AppUser} from "../data/data";
 import "../assets/styles/styles.css"
+import {useAuth} from "../context/AuthContext";
 
 const Login = () => {
     const [loginName, setLoginName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate();
+    const {login} = useAuth();
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -18,7 +19,6 @@ const Login = () => {
             const response = await axios.post('http://localhost:9000/api/v1/auth/login',
                 { userName: loginName, password: password });
             const token = response.data.jwt;
-
             localStorage.setItem('token', token);
 
             try {
@@ -29,22 +29,16 @@ const Login = () => {
                     .then(res => {
                         const user: AppUser = res.data;
                         localStorage.setItem('activeUser', JSON.stringify(user));
+                        login();
                     });
             } catch (err: any) {
                 console.error('Error fetching user:', err.message);
                 setError(err.message);
             }
-
-            navigate('/account');
         } catch (error: any) {
             console.error('Error during logging in:', error.message);
             setError(error.message);
         }
-    }
-
-    function handleLogout() {
-        localStorage.removeItem('token');
-        navigate('/login');
     }
 
     function handleLoginChange(event: React.ChangeEvent<HTMLInputElement>) {

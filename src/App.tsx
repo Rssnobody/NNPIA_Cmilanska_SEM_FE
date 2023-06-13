@@ -7,11 +7,12 @@ import Header from "./components/Header";
 import Register from "./components/Register";
 import BookDetail from "./pages/BookDetail";
 import UserAccount from "./components/UserAccount";
+import {AuthProvider} from "./context/AuthContext";
 
 const App = () => {
     return (
-        <>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <Header/>
                 <Routes>
                     <Route
@@ -34,11 +35,11 @@ const App = () => {
                     </Route>
                     <Route
                         path={"/account"}
-                        element={<UserAccount />}
+                        element={<UserAccount/>}
                     />
                 </Routes>
-            </BrowserRouter>
-        </>
+            </AuthProvider>
+        </BrowserRouter>
     );
 };
 
