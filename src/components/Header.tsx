@@ -15,7 +15,7 @@ const Header = () => {
                     <Nav className="ms-auto">
                         {isAuthenticated ? (
                             <>
-                                <Nav.Link href={'account'}>Account</Nav.Link>
+                                <Nav.Link href={'/account'}>Account</Nav.Link>
                                 <Nav.Link onClick={logout}>Logout</Nav.Link>
                             </>
                         ) : (
