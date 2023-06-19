@@ -1,5 +1,6 @@
 import React, {createContext, useState, useContext, ReactNode, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 type AuthContextType = {
     isAuthenticated: boolean;
@@ -27,13 +28,24 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsAuthenticated(false);
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('token');
+        localStorage.removeItem('activeUser');
         navigate('/login');
     };
+
+    function isTokenExpired(token: string): boolean {
+        const decodedToken: { exp: number } = jwt_decode(token);
+        return !!(decodedToken.exp && Date.now() >= decodedToken.exp * 1000);
+    }
 
     useEffect(() => {
         const storedAuthState = localStorage.getItem('isAuthenticated');
         if (storedAuthState === 'true') {
             setIsAuthenticated(true);
+        }
+
+        const token = localStorage.getItem('token');
+        if (token && isTokenExpired(token)) {
+            logout();
         }
     }, []);
 

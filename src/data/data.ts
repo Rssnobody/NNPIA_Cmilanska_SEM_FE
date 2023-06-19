@@ -6,9 +6,7 @@ export interface AppUser {
     firstName: string;
     lastName: string;
     dateOfBirth: Date;
-    userBooks: UserBook[];
 }
-
 
 export interface Book {
     bookId: number;
@@ -16,54 +14,57 @@ export interface Book {
     picture: string;
     description: string;
     authors: AuthorInBook[];
-    // userBooks: UserBook[];
+}
+
+export interface BookDetails {
+    bookId: number;
+    name: string;
+    picture: string;
+    description: string;
+    authors: AuthorInBook[];
+    reviews: Review[];
 }
 
 export interface BookInput {
     name: string;
     picture: string;
-    author: AuthorInBook;
     description: string;
+    authors: AuthorInput[];
 }
 
 export interface UserBook {
-    userId: number;
-    bookId: number;
-    // book: Book;
+    id: number;
+    user: AppUser;
+    book: Book;
     state: State;
     review: Review;
 }
 
 export interface AuthorInBook {
-    id: number;
+    authorId: number;
     firstName: string;
     lastName: string;
 }
 
-export interface Author {
-    id: number;
+export interface AuthorInput {
     firstName: string;
     lastName: string;
-    books: Book[];
 }
 
 export interface Rating {
-    id: number;
+    ratindId: number;
     name: string;
     value: number;
-    //reviews: Review[];
 }
 
 export interface Review {
-    id: number;
+    reviewId: number;
     creationDate: Date;
     text: string;
     rating: Rating;
-    //userBooks: UserBook[];
 }
 
 export interface State {
-    id: number;
+    stateId: number;
     name: string;
-    //userBooks: UserBook[];
 }

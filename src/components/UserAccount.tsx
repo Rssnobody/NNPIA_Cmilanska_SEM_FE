@@ -1,15 +1,17 @@
-import {Alert, Button, Col, Container, Form, Row} from "react-bootstrap";
+import {Col, Container, Image, Modal, Row} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
-import {AppUser} from "../data/data";
-import {Link, useNavigate} from "react-router-dom";
+import {AppUser, BookInput} from "../data/data";
+import {useNavigate} from "react-router-dom";
 import UserBooksView from "./UserBooksView";
 import CreateBookForm from "./form/CreateBookForm";
+import axios from "axios";
 
 
 const UserAccount = () => {
     const [user, setUser] = useState<AppUser>();
     const [error, setError] = useState('');
     const userString = localStorage.getItem('activeUser');
+    const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
 
 
@@ -22,14 +24,43 @@ const UserAccount = () => {
         }
     }, []);
 
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    const handleAddBookClick = () => {
+        setShowModal(true);
+    };
 
-    }
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleCreateBook = async (book: BookInput) => {
+        try {
+            const token = localStorage.getItem('token');
+
+            await axios.post(
+                'http://localhost:9000/api/v1/book/create',
+                {
+                    name: book.name,
+                    picture: book.picture,
+                    description: book.description,
+                    authors: book.authors
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            console.log('Book created successfully!');
+        } catch (error) {
+            console.error('Error creating book:', error);
+        }
+    };
 
     return (
         <Container className="py-4">
             <Row className="justify-content-evenly">
-                <Col>
+                <div className="col-md-6">
                     <div>
                         <h2>Account info</h2>
                         <div className="py-4 col-md-12">
@@ -92,60 +123,45 @@ const UserAccount = () => {
                             </div>
                         </div>
                     </div>
-                </Col>
-                <Col>
-                    <div>
-                        {/*<CreateBookForm/>*/}
-                        {/*<h3>Add book</h3>*/}
-                        {/*<Form onSubmit={handleSubmit}>*/}
-                        {/*    <Form.Group controlId="title">*/}
-                        {/*        <Form.Label>Book Title</Form.Label>*/}
-                        {/*        <Form.Control*/}
-                        {/*            type="text"*/}
-                        {/*            required*/}
-                        {/*            placeholder="Enter book title"*/}
-                        {/*        />*/}
-                        {/*    </Form.Group>*/}
-                        {/*    <Form.Group controlId="cover">*/}
-                        {/*        <Form.Label>Cover picture URL</Form.Label>*/}
-                        {/*        <Form.Control*/}
-                        {/*            type="text"*/}
-                        {/*            required*/}
-                        {/*            placeholder="Enter book cover picture URL"*/}
-                        {/*        />*/}
-                        {/*    </Form.Group>*/}
-                        {/*    <Form.Group controlId="cover">*/}
-                        {/*        <Form.Label>Cover picture URL</Form.Label>*/}
-                        {/*        <Form.Control*/}
-                        {/*            type="text"*/}
-                        {/*            required*/}
-                        {/*            placeholder="Enter book cover picture URL"*/}
-                        {/*        />*/}
-                        {/*    </Form.Group>*/}
-                        {/*    <Form.Group controlId="cover">*/}
-                        {/*        <Form.Label>Cover picture URL</Form.Label>*/}
-                        {/*        <Form.Control*/}
-                        {/*            type="text"*/}
-                        {/*            required*/}
-                        {/*            placeholder="Enter book cover picture URL"*/}
-                        {/*        />*/}
-                        {/*    </Form.Group>*/}
-                        {/*    {error && <Alert variant="danger">{error}</Alert>}*/}
-                        {/*    <Button*/}
-                        {/*        type="submit"*/}
-                        {/*        variant="primary"*/}
-                        {/*        className="w-100 mt-3">*/}
-                        {/*        Sign In*/}
-                        {/*    </Button>*/}
-                        {/*    <div className="w-100 text-center mt-3">*/}
-                        {/*        Don't have an account? <Link to="/register">Sign up</Link>*/}
-                        {/*    </div>*/}
-                        {/*</Form>*/}
+                </div>
+
+                <Col className="col-md-6 d-flex align-items-center justify-content-center">
+                    <div
+                        className="add-book-button"
+                        onClick={handleAddBookClick}
+                        style={{
+                            borderRadius: "30px",
+                            maxHeight: "400px",
+                            position: "relative",
+                        }}
+                    >
+                        <Image
+                            src="src/assets/bookAvatar.jpg"
+                            fluid
+                            style={{
+                                borderRadius: "30px",
+                                maxHeight: "400px",
+                                transition: "opacity 0.3s ease",
+                            }}
+                            className="add-book-button-image"
+                        />
+                        <div className="add-book-button-overlay">
+                            <div className="add-book-button-text">Add book</div>
+                        </div>
+                        <div className="plus-character">+</div>
                     </div>
                 </Col>
             </Row>
             <br/>
-            <UserBooksView/>
+            {user && <UserBooksView appUser={user} />}
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Create New Book</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <CreateBookForm onSubmit={handleCreateBook} />
+                </Modal.Body>
+            </Modal>
         </Container>
     );
 }
