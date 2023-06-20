@@ -101,24 +101,24 @@ const UserAccount = () => {
                                             {new Date(user?.dateOfBirth!!).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    <hr/>
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <h6 className="mb-0">Unread books</h6>
-                                        </div>
-                                        <div className="col-sm-9 text-secondary">
-                                            cisloooo
-                                        </div>
-                                    </div>
-                                    <hr/>
-                                    <div className="row">
-                                        <div className="col-sm-3">
-                                            <h6 className="mb-0">Read books</h6>
-                                        </div>
-                                        <div className="col-sm-9 text-secondary">
-                                            cisloooo
-                                        </div>
-                                    </div>
+                                    {/*<hr/>*/}
+                                    {/*<div className="row">*/}
+                                    {/*    <div className="col-sm-3">*/}
+                                    {/*        <h6 className="mb-0">Unread books</h6>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className="col-sm-9 text-secondary">*/}
+                                    {/*        cisloooo*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                    {/*<hr/>*/}
+                                    {/*<div className="row">*/}
+                                    {/*    <div className="col-sm-3">*/}
+                                    {/*        <h6 className="mb-0">Read books</h6>*/}
+                                    {/*    </div>*/}
+                                    {/*    <div className="col-sm-9 text-secondary">*/}
+                                    {/*        cisloooo*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@ const UserAccount = () => {
                         onClick={handleAddBookClick}
                         style={{
                             borderRadius: "30px",
-                            maxHeight: "400px",
+                            maxHeight: "300px",
                             position: "relative",
                         }}
                     >
@@ -140,7 +140,7 @@ const UserAccount = () => {
                             fluid
                             style={{
                                 borderRadius: "30px",
-                                maxHeight: "400px",
+                                maxHeight: "300px",
                                 transition: "opacity 0.3s ease",
                             }}
                             className="add-book-button-image"
