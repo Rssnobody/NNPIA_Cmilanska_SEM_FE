@@ -64,6 +64,12 @@ export interface Review {
     rating: Rating;
 }
 
+export interface ReviewInput {
+    creationDate: Date;
+    text: string;
+    ratingValue: number;
+}
+
 export interface State {
     stateId: number;
     name: string;

@@ -1,5 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
-import {AppUser, Book, BookDetails} from "../data/data";
+import {AppUser, BookDetails} from "../data/data";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import "../assets/styles/styles.css"
@@ -36,6 +36,31 @@ const UserBooksView = ({appUser} : Props) => {
 
         fetchBooks(`http://localhost:9000/api/v1/book/${activeTab}/${appUser.userId}`);
     }, [activeTab]);
+
+    const handleDeleteBook = async (bookDetails: BookDetails) => {
+        try {
+            const token = localStorage.getItem('token');
+            const userString = localStorage.getItem('activeUser');
+            if (userString) {
+                const user = JSON.parse(userString) as AppUser;
+
+                const response = await axios.delete(
+                    `http://localhost:9000/api/v1/user-book/delete/${user.userId}/${bookDetails.bookId}`,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    });
+                if (response.status === 200) {
+                    setDetails((prevDetails) =>
+                        prevDetails.filter((detail) => detail.bookId !== bookDetails.bookId)
+                    );
+                }
+            }
+        } catch (error) {
+            console.error('Error deleting user book:', error);
+        }
+    };
 
     return (
         <div className="event-schedule-area-two bg-color pad100">
@@ -83,7 +108,11 @@ const UserBooksView = ({appUser} : Props) => {
                             <Row>
                                 {(details && details.length > 0) ?
                                     (details.map((b) => (
-                                        <BookItem bookDetails={b} key={b.bookId} />
+                                        <BookItem
+                                            bookDetails={b}
+                                            handleDeleteClicked={handleDeleteBook}
+                                            activeTab={activeTab}
+                                            key={b.bookId} />
                                     )))
                                 : (<div
                                         className="text-center text-black-50 mt-3"

@@ -7,6 +7,9 @@ import axios from "axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {useAuth} from "../context/AuthContext";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStarHalfAlt as halfStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 
 
 const BookDetail = () => {
@@ -133,15 +136,15 @@ const BookDetail = () => {
 
         const stars = [];
         for (let i = 0; i < fullStars; i++) {
-            stars.push(<span key={i}>★</span>);
+            stars.push(<FontAwesomeIcon key={i} icon={solidStar} />);
         }
 
         if (hasHalfStar) {
-            stars.push(<span key={fullStars}>½</span>);
+            stars.push(<FontAwesomeIcon key={fullStars} icon={halfStar} />);
         }
 
         for (let i = stars.length; i < starCount; i++) {
-            stars.push(<span key={i}>☆</span>);
+            stars.push(<FontAwesomeIcon key={i} icon={emptyStar} />);
         }
 
         return <div>{stars}</div>;

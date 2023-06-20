@@ -9,7 +9,6 @@ import axios from "axios";
 
 const UserAccount = () => {
     const [user, setUser] = useState<AppUser>();
-    const [error, setError] = useState('');
     const userString = localStorage.getItem('activeUser');
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
@@ -50,6 +49,7 @@ const UserAccount = () => {
                     },
                 }
             );
+            handleCloseModal();
 
             console.log('Book created successfully!');
         } catch (error) {

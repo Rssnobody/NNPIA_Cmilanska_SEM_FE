@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import {AppUser} from "../data/data";
 import "../assets/styles/styles.css"
@@ -37,7 +36,11 @@ const Login = () => {
             }
         } catch (error: any) {
             console.error('Error during logging in:', error.message);
-            setError(error.message);
+            if (error.response && error.response.status === 401) {
+                setError("Wrong credentials.");
+            } else {
+                setError(error.message);
+            }
         }
     }
 
@@ -87,9 +90,9 @@ const Login = () => {
                                         className="w-100 mt-3">
                                         Sign In
                                     </Button>
-                                    <div className="w-100 text-center mt-3">
-                                        Don't have an account? <Link to="/register">Sign up</Link>
-                                    </div>
+                                    {/*<div className="w-100 text-center mt-3">*/}
+                                    {/*    Don't have an account? <Link to="/register">Sign up</Link>*/}
+                                    {/*</div>*/}
                                 </Form>
                             </div>
                         </Card>
